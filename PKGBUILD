@@ -34,7 +34,6 @@ md5sums=('34a7da16c4669b3e7cc89dfee06ddd9d'
          '33ba82001fca579d43172a6db25d6aca')
 
 prepare() {
-  cd $_srcname
 
   echo "Setting version..."
   echo "-$pkgrel" > localversion.10-pkgrel
@@ -43,11 +42,10 @@ prepare() {
   # ALARM patches
   git apply ../0003-pps-Compatibility-hack-should-be-X86-specific.patch
 
-  cat "${srcdir}/config" > ./.config
+  cat ../config > ./.config
 }
 
 build() {
-  cd ${_srcname}
 
   # get kernel version
   make prepare
@@ -69,7 +67,6 @@ _package() {
   conflicts=('linux')
   install=${pkgname}.install
 
-  cd $_srcname
   local kernver="$(<version)"
   local modulesdir="$pkgdir/usr/lib/modules/$kernver"
 
@@ -104,7 +101,6 @@ _package-headers() {
   provides=("linux-headers=${pkgver}")
   conflicts=('linux-headers')
 
-  cd $_srcname
   local builddir="$pkgdir/usr/lib/modules/$(<version)/build"
 
   echo "Installing build files..."
